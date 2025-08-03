@@ -26,6 +26,20 @@ export default function App() {
       isCompleted: false,
     },
   ]);
+
+  function onTaskCLick(taskId) {
+    const newTaks = tasks.map((task) => {
+      // PRECISO ATUALIZAR ESSA TAREFA
+      if (task.id === taskId) {
+        <return>...task, isCompleted: !is</return>;
+      }
+
+      //  NÃO PRECISO ATUALIZAR ESSA TAREFA
+      return task;
+    });
+    setTasks(newTaks);
+  }
+
   return (
     <div className="w-screen h-screen bg-slate-500 flex justify-center p-6">
       <div className="w-[500px]">
@@ -34,7 +48,7 @@ export default function App() {
         </h1>
         {/* <AddTask /> */}
         {/* Passando os dados pelo props para ter acesso no componente */}
-        <Tasks tasks={tasks} />
+        <Tasks tasks={tasks} onTaskCLick={onTaskCLick} />
       </div>
     </div>
   );
