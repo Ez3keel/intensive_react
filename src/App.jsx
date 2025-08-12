@@ -1,5 +1,5 @@
 import Tasks from "./components/Tasks";
-import AddTask from "./components/AddTask";
+// import AddTask from "./components/AddTask";
 import { useState } from "react";
 
 export default function App() {
@@ -27,11 +27,11 @@ export default function App() {
     },
   ]);
 
-  function onTaskCLick(taskId) {
+  function onTaskClick(taskId) {
     const newTaks = tasks.map((task) => {
       // PRECISO ATUALIZAR ESSA TAREFA
       if (task.id === taskId) {
-        <return>...task, isCompleted: !is</return>;
+        return { ...task, isCompleted: !task.isCompleted };
       }
 
       //  NÃO PRECISO ATUALIZAR ESSA TAREFA
@@ -48,7 +48,7 @@ export default function App() {
         </h1>
         {/* <AddTask /> */}
         {/* Passando os dados pelo props para ter acesso no componente */}
-        <Tasks tasks={tasks} onTaskCLick={onTaskCLick} />
+        <Tasks tasks={tasks} onTaskClick={onTaskClick} />
       </div>
     </div>
   );
