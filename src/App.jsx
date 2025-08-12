@@ -1,8 +1,11 @@
 import Tasks from "./components/Tasks";
-// import AddTask from "./components/AddTask";
+import AddTask from "./components/AddTask";
 import { useState } from "react";
+import { Toaster } from "./components/ui/sonner";
+import { toast } from "sonner"
 
 export default function App() {
+  
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -40,40 +43,49 @@ export default function App() {
     setTasks(newTaks);
   }
 
+  function deleteTask(taskId) {
+    // Filtrar as tarefas para remover a tarefa com o ID especificado
+    // Retorna todas as tarefas que não possuem o ID igual ao taskId  
+    // tasks.filter() retorna um novo array
+    // tasks.filter() não modifica o array original
+    const newTasks = tasks.filter((task) => task.id !== taskId);
+    setTasks(newTasks);
+  }
+
+  function onAddTaskSubmit(title, description) {
+    // Adiciona uma nova tarefa ao array de tarefas
+    if (!title || !description) {
+      toast.error("Preencha todos os campos! ", {
+        className: "bg-red-900 text-white",
+        description: "Você precisa preencher o título e a descrição da tarefa.",
+      });
+      return;
+    }
+    const newTask = {
+      id: tasks.length + 1, // Gera um ID único
+      title: title,
+      description: description,
+      isCompleted: false,
+    };
+    setTasks([...tasks, newTask]);
+    toast.success("Tarefa adicionada com sucesso!", {
+      className: "bg-green-900 text-white",
+      description: "Sua nova tarefa foi adicionada à lista.",
+    });
+
+  }
+
   return (
-    <div className="w-screen h-screen bg-slate-500 flex justify-center p-6">
-      <div className="w-[500px]">
-        <h1 className="text-3x1 text-slate-100 font-bold text-center">
+    <div className="w-screen h-screen bg-violet-300 flex justify-center p-6">
+      <div className="w-[500px] space-y-4">
+        <h1 className="text-3x1 text-slate-100 font-bold text-center mb-6">
           Gerenciador de Tarefas
         </h1>
-        {/* <AddTask /> */}
+        <AddTask onAddTaskSubmit={onAddTaskSubmit} />
         {/* Passando os dados pelo props para ter acesso no componente */}
-        <Tasks tasks={tasks} onTaskClick={onTaskClick} />
+        <Tasks tasks={tasks} onTaskClick={onTaskClick} deleteTask={deleteTask}/>
       </div>
+      <Toaster position="top-center"/>
     </div>
   );
 }
-
-/**
- * Anotation
- * import { useState } from "react";
-
-export default function App() {
-  // State
-  // dentro do useState definimos o valor inicial
-  const [message, setMessage] = useState("Olá, mundo!");
-  return (
-    <div>
-      <h1>{message}</h1>
-      <button
-        onClick={() => {
-          setMessage("Olá, fui clicado!");
-        }}
-      >
-        Mudar Mensagem
-      </button>
-    </div>
-  );
-}
-
- */
