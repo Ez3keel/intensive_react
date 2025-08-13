@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+
 export default function AddTask({onAddTaskSubmit}) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -17,6 +18,7 @@ export default function AddTask({onAddTaskSubmit}) {
             onClick={() => {onAddTaskSubmit(title, description);}}>
                     Adicionar Tarefa 
             </button>
+            
         </div>
     );
 };
