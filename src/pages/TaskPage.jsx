@@ -17,8 +17,8 @@ const TaskPage = () => {
 
   return (
     <div className="w-screen h-screen bg-violet-500 p-6 ">
-      <div className="w-[500px] space-y-4">
-        <div className="flex justify-center relative mb-6">
+      <div className="mx-auto space-y-4">
+        <div className="flex justify-center relative mb-6 w-screen">
           <button
             className="absolute left-0 top-0 bottom-0"
             onClick={onBackButtonClick}
@@ -29,10 +29,15 @@ const TaskPage = () => {
           <Title>Detalhes da Tarefa</Title>
         </div>
 
-        <div className="bg-slate-400 p-4 rounded-md">
+        <div className="bg-slate-200 m-4 p-4 rounded-md flex flex-col max-w-full break-words">
+          <h2 className="text-2xl font-bold text-stone-600 mb-2">{title}</h2>
+          <p className="text-stone-600">{description}</p>
+        </div>
+
+        {/* <div className="bg-slate-400 p-4 rounded-md flex flex-col gap-2">
           <h2 className="text-2xl font-bold text-white mb-2">{title}</h2>
           <p className="text-white">{description}</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

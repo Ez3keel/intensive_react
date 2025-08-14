@@ -26,7 +26,7 @@ export default function Tasks({ tasks, onTaskClick, deleteTask }) {
           <button
             onClick={() => onTaskClick(task.id)}
             className={`bg-violet-600 text-left w-full text-white p-2 rounded-md ${
-              task.isCompleted && "line-through"
+              task.isCompleted && ""
             }`}
           >
             {task.title}
