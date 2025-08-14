@@ -1,7 +1,8 @@
 import { ChevronRightIcon, TrashIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Button from "./Button";
 
-export default function Tasks({tasks, onTaskClick, deleteTask}) {
+export default function Tasks({ tasks, onTaskClick, deleteTask }) {
   const navigate = useNavigate();
 
   function onSeeDetailsClick(task) {
@@ -32,31 +33,40 @@ export default function Tasks({tasks, onTaskClick, deleteTask}) {
             {task.isCompleted ? " ✅" : " ❌"}
           </button>
 
-
-          <button onClick={ () => onSeeDetailsClick(task)}
-            className="bg-violet-600 p-2 rounded-md text-white">
+          {/* ANTES  */}
+          {/* <button
+            onClick={() => onSeeDetailsClick(task)}
+            className="bg-violet-600 p-2 rounded-md text-white"
+          >
             <ChevronRightIcon />
-          </button>
+          </button> */}
 
+          {/* Botão para ver detalhes da tarefa */}
+          <Button
+            onClick={() => onSeeDetailsClick(task)}
+            className="bg-violet-600 p-2 rounded-md text-white"
+          >
+            <ChevronRightIcon />
+          </Button>
 
-          <button className="bg-violet-600 p-2 rounded-md text-white" 
-          //Chama o método deleteTask passando o ID da tarefa
-          onClick={() => deleteTask(task.id)}> 
-            <TrashIcon/>
-          </button>
+          {/* ANTES  */}
+          {/* <button
+            className="bg-violet-600 p-2 rounded-md text-white"
+            //Chama o método deleteTask passando o ID da tarefa
+            onClick={() => deleteTask(task.id)}
+          >
+            <TrashIcon />
+          </button> */}
+
+          <Button
+            className="bg-violet-600 p-2 rounded-md text-white"
+            //Chama o método deleteTask passando o ID da tarefa
+            onClick={() => deleteTask(task.id)}
+          >
+            <TrashIcon />
+          </Button>
         </li>
       ))}
     </ul>
   );
 }
-
-// export default function Tasks(props) {
-//   console.log(props);
-//   return (
-//     <div>
-//       {props.tasks.map((task) => (
-//         <p key={task.id}>{task.title}</p>
-//       ))}
-//     </div>
-//   );
-// }

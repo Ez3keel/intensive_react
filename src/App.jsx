@@ -2,41 +2,50 @@ import Tasks from "./components/Tasks";
 import AddTask from "./components/AddTask";
 import { useEffect, useState } from "react";
 import { Toaster } from "./components/ui/sonner";
-import { toast } from "sonner"
-import { v4  } from 'uuid';
-
+import { toast } from "sonner";
+import { v4 } from "uuid";
+import Title from "./components/Title";
+import Test from "./components/Test";
 
 export default function App() {
-  
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Estudar programação",
-      description:
-        "Estudar programação para se tornar um desenvolvedor Full Stack",
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: "Estudar programação",
-      description:
-        "Estudar programação para se tornar um desenvolvedor Full Stack",
-      isCompleted: false,
-    },
-    {
-      id: 3,
-      title: "Estudar programação",
-      description:
-        "Estudar programação para se tornar um desenvolvedor Full Stack",
-      isCompleted: false,
-    },
-  ]);
+  const [tasks, setTasks] = useState(
+    // Inicializa o estado 'tasks' com os dados do localStorage ou um array vazio se não houver dados
+    // JSON.parse() converte a string JSON armazenada no localStorage de volta para um array de objetos
+    //PARSE CONVERTE A STRING JSON EM UM OBJETO JAVASCRIPT
+    JSON.parse(localStorage.getItem("tasks")) || []
+  );
+
+  useEffect(() => {
+    //Chamar API
+    //como possui await, precisa ser uma função async
+    async function fetchTasks() {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/todos?_limit=10",
+        {
+          method: "GET",
+        }
+      );
+
+      //Pega os dados que (API) retorna e converte para JSON
+      const data = await response.json();
+
+      //armazena/persiste os dados no state
+      setTasks(data);
+      //Se quiser, você pode chamar uma API para buscar as tarefas
+      // e atualizar o estado 'tasks' com os dados recebidos.
+    }
+    //fetchTasks(); //Comentei para não chamar a API toda vez que o componente renderiza
+  }, []);
+
+  // useEffect com []vazia significa que o efeito será executado apenas uma vez, após o primeiro render
+  // Isso é útil para inicializar o estado ou realizar ações que não precisam ser repetidas
 
   // Monitora as mudanças no estado 'tasks' e registra no console sempre que houver uma atualização
   // sempre que tiver uma mudança no array de tarefas, ele vai logar no console no caso executar a função
   useEffect(() => {
-    console.log(tasks);
-  },[tasks])
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    console.log("Tarefas atualizadas:", tasks);
+  }, [tasks]);
 
   function onTaskClick(taskId) {
     const newTaks = tasks.map((task) => {
@@ -53,7 +62,7 @@ export default function App() {
 
   function deleteTask(taskId) {
     // Filtrar as tarefas para remover a tarefa com o ID especificado
-    // Retorna todas as tarefas que não possuem o ID igual ao taskId  
+    // Retorna todas as tarefas que não possuem o ID igual ao taskId
     // tasks.filter() retorna um novo array
     // tasks.filter() não modifica o array original
     const newTasks = tasks.filter((task) => task.id !== taskId);
@@ -62,16 +71,17 @@ export default function App() {
 
   function onAddTaskSubmit(title, description) {
     // Adiciona uma nova tarefa ao array de tarefas
-  if (!title.trim() || !description.trim()) {
-    toast.error("Preencha todos os campos!", {
-      description: "Você precisa preencher o título e a descrição da tarefa.",
-      classNames: {
-        toast: "!bg-red-600 !text-white !border !border-red-600 !p-4 !rounded-md !shadow-lg",
-        description: "!text-red-100"
-      }
-    });
+    if (!title.trim() || !description.trim()) {
+      toast.error("Preencha todos os campos!", {
+        description: "Você precisa preencher o título e a descrição da tarefa.",
+        classNames: {
+          toast:
+            "!bg-red-600 !text-white !border !border-red-600 !p-4 !rounded-md !shadow-lg",
+          description: "!text-red-100",
+        },
+      });
 
-    return;
+      return;
     }
 
     const newTask = {
@@ -85,25 +95,28 @@ export default function App() {
     toast.success("Tarefa adicionada com sucesso!", {
       description: "Sua nova tarefa foi adicionada à lista.",
       classNames: {
-        toast: "!bg-green-600 !text-white !p-4 !rounded-md !shadow-lg !border !border-green-600",
-        description: "!text-white-100 !text-sm mt-1"
+        toast:
+          "!bg-green-600 !text-white !p-4 !rounded-md !shadow-lg !border !border-green-600",
+        description: "!text-white-100 !text-sm mt-1",
       },
-      
     });
   }
 
   return (
     <div className="w-screen h-screen bg-indigo-300 flex justify-center p-6">
       <div className="w-[500px] space-y-4">
-        <h1 className="text-9x1 text-slate-100 font-bold text-center mb-6">
-          Gerenciador de Tarefas
-        </h1>
+        <Title>Gerenciador de Tarefas</Title>
+
         <AddTask onAddTaskSubmit={onAddTaskSubmit} />
         {/* Passando os dados pelo props para ter acesso no componente */}
-        <Tasks tasks={tasks} onTaskClick={onTaskClick} deleteTask={deleteTask}/>
+        <Tasks
+          tasks={tasks}
+          onTaskClick={onTaskClick}
+          deleteTask={deleteTask}
+        />
+     
       </div>
-      <Toaster richColors  position="top-center"/>
-      
+      <Toaster richColors position="top-center" />
     </div>
   );
 }
