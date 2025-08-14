@@ -103,7 +103,7 @@ export default function App() {
   }
 
   return (
-    <div className="w-screen h-screen bg-indigo-300 flex justify-center p-6">
+    <div className="w-screen min-h-screen bg-indigo-300 flex justify-center p-6">
       <div className="w-[500px] space-y-4">
         <Title>Gerenciador de Tarefas</Title>
 
@@ -114,7 +114,6 @@ export default function App() {
           onTaskClick={onTaskClick}
           deleteTask={deleteTask}
         />
-     
       </div>
       <Toaster richColors position="top-center" />
     </div>
